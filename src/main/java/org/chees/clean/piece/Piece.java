@@ -2,31 +2,17 @@ package org.chees.clean.piece;
 
 import org.chees.clean.board.position.Position;
 
-public abstract class Piece {
+import java.util.Objects;
 
-    final PieceId id;
+public record Piece(PieceId id, Color color, Position position, PieceType pieceType) {
 
-    final Color color;
-
-    final Position position;
-
-    protected Piece(PieceId id,Color color, Position position) {
-        this.id=id;
-        this.color = color;
-        this.position = position;
+    public Piece{
+        if (id==null||color==null||position==null||pieceType==null){
+            throw new RuntimeException("Error during Piece creation");
+        }
     }
 
-    public abstract Piece move(Position position);
-
-    public PieceId getId() {
-        return id;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Position getPosition() {
-        return position;
+    public Piece move(Position position) {
+        return new Piece(id, color, position, pieceType);
     }
 }

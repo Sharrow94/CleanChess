@@ -1,13 +1,16 @@
 import org.chees.clean.board.position.Position;
-import org.chees.clean.board.position.PositionLetter;
-import org.chees.clean.piece.*;
+import org.chees.clean.piece.Piece;
+import org.chees.clean.piece.PieceId;
 
 import java.util.List;
-import java.util.UUID;
+
+import static org.chees.clean.board.position.PositionLetter.E;
+import static org.chees.clean.piece.Color.WHITE;
+import static org.chees.clean.piece.PieceType.KNIGHT;
 
 public class BoardSetupProvider {
 
-        public List<Piece> getPiecesForKnightCorrectMove(){
-            return List.of(new Knight(new PieceId("1"), Color.WHITE,new Position(PositionLetter.E,4)));
-        }
+    public List<Piece> getPiecesForKnightCorrectMove() {
+        return List.of(new Piece(new PieceId("1"), WHITE, new Position(E, 4), KNIGHT));
+    }
 }
