@@ -1,8 +1,9 @@
-package org.chees.clean.moving;
+package org.chees.clean.moving.strategy;
 
+import org.chees.clean.moving.strategy.implementation.*;
 import org.chees.clean.piece.PieceType;
 
-public class MoveStrategyFactoryImpl implements MoveStrategyFactory{
+public class MoveStrategyFactoryImpl implements MoveStrategyFactory {
 
     @Override
     public MoveStrategy getMoveStrategy(PieceType type) {
@@ -13,7 +14,6 @@ public class MoveStrategyFactoryImpl implements MoveStrategyFactory{
             case QUEEN -> new QueenMoveStrategy();
             case ROOK -> new RookMoveStrategy();
             case KNIGHT -> new KnightMoveStrategy();
-            default -> throw new RuntimeException("No supported piece type!");
         };
 
     }

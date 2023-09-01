@@ -1,6 +1,7 @@
-package org.chees.clean.moving.equation;
+package org.chees.clean.moving.equation.implementation;
 
 import org.chees.clean.board.position.Position;
+import org.chees.clean.moving.equation.Equation;
 
 public class VerticalEquation implements Equation {
 
