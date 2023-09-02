@@ -27,7 +27,7 @@ public class MoveEngineImpl implements MoveEngine {
     private Stream<Move> getLegalMovesFor(Piece piece, ChessBoard board) {
         MoveStrategy moveStrategy = moveStrategyFactory.getMoveStrategy(piece.pieceType());
         List<Equation> equationList = moveStrategy.getEquations(piece);
-
+//        equationList.stream().flatMap(equation -> equation.test());
         return Stream.of();
     }
 }

@@ -4,5 +4,7 @@ public class ChessBoardTest {
 
     @Test
     public void test_rook_can_move() {
+
+
     }
 }
