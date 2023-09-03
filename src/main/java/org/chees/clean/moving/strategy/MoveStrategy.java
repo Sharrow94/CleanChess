@@ -1,55 +1,80 @@
 package org.chees.clean.moving.strategy;
 
 import org.chees.clean.board.position.Position;
-import org.chees.clean.moving.equation.Equation;
+import org.chees.clean.engine.Move;
 import org.chees.clean.moving.equation.implementation.DiagonalEquation;
 import org.chees.clean.moving.equation.implementation.HorizontalEquation;
 import org.chees.clean.moving.equation.implementation.VerticalEquation;
 import org.chees.clean.piece.Piece;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface MoveStrategy {
 
     static MoveStrategy knightMoveStrategy() {
         return piece -> {
             Position position = piece.position();
-            double a = 0.5;
             double y = position.number();
-            double halfX = a * position.letter().getValue();
-            return List.of(new DiagonalEquation(a, y - halfX), new DiagonalEquation(-a, y + halfX));
+            int x = position.letter().getValue();
+            return Stream.of(0.5, -0.5, 2.0, -2.0)
+                    .map(a -> new DiagonalEquation(a, y - a * x))
+                    .flatMap(equation -> equation.getAvailableMoves(piece).stream())
+                    .toList();
         };
     }
 
     static MoveStrategy pawnMoveStrategy() {
-        return piece -> List.of(new VerticalEquation(piece.position().letter().getValue()));
+        return piece -> Stream.of(new VerticalEquation(piece.position().letter().getValue()))
+                .flatMap(equation -> equation.getAvailableMoves(piece).stream())
+                .toList();
     }
 
     static MoveStrategy queenMoveStrategy() {
+        return MoveStrategy::allDirectionsMove;
+    }
+
+    static MoveStrategy rookMoveStrategy() {
         return piece -> {
             Position position = piece.position();
             int number = position.number();
             int letter = position.letter().getValue();
-            return List.of(new VerticalEquation(letter),
-                    new HorizontalEquation(number),
-                    new DiagonalEquation(1, number - letter),
-                    new DiagonalEquation(1, number + letter));
+            return Stream.of(new VerticalEquation(letter),
+                            new HorizontalEquation(number))
+                    .flatMap(equation -> equation.getAvailableMoves(piece).stream())
+                    .toList();
         };
     }
 
-    static MoveStrategy rookMoveStrategy() {
-        return piece -> List.of();
-    }
-
     static MoveStrategy bishopMoveStrategy() {
-        return piece -> List.of();
+        return piece -> {
+            Position position = piece.position();
+            int number = position.number();
+            int letter = position.letter().getValue();
+            return Stream.of(new DiagonalEquation(1, number - letter),
+                            new DiagonalEquation(1, number + letter))
+                    .flatMap(equation -> equation.getAvailableMoves(piece).stream())
+                    .toList();
+        };
     }
 
     static MoveStrategy kingMoveStrategy() {
-        return piece -> List.of();
+        return MoveStrategy::allDirectionsMove;
+
     }
 
-    List<Equation> getEquations(Piece piece);
+    private static List<Move> allDirectionsMove(Piece piece) {
+        Position position = piece.position();
+        int number = position.number();
+        int letter = position.letter().getValue();
+        return Stream.of(new VerticalEquation(letter),
+                        new HorizontalEquation(number),
+                        new DiagonalEquation(1, number - letter),
+                        new DiagonalEquation(-1, number + letter))
+                .flatMap(equation -> equation.getAvailableMoves(piece).stream())
+                .toList();
+    }
 
+    List<Move> getAvailableMoves(Piece piece);
 }
 

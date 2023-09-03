@@ -9,4 +9,5 @@ public record Piece(PieceId id, Color color, Position position, PieceType pieceT
             throw new RuntimeException("Error during Piece creation");
         }
     }
+
 }

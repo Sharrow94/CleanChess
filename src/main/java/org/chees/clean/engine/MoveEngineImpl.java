@@ -1,7 +1,6 @@
 package org.chees.clean.engine;
 
 import org.chees.clean.board.ChessBoard;
-import org.chees.clean.moving.equation.Equation;
 import org.chees.clean.moving.strategy.MoveStrategy;
 import org.chees.clean.moving.strategy.MoveStrategyFactory;
 import org.chees.clean.piece.Color;
@@ -26,8 +25,8 @@ public class MoveEngineImpl implements MoveEngine {
 
     private Stream<Move> getLegalMovesFor(Piece piece, ChessBoard board) {
         MoveStrategy moveStrategy = moveStrategyFactory.getMoveStrategy(piece.pieceType());
-        List<Equation> equationList = moveStrategy.getEquations(piece);
-//        equationList.stream().flatMap(equation -> equation.test());
+        List<Move> moveList = moveStrategy.getAvailableMoves(piece);
+
         return Stream.of();
     }
 }

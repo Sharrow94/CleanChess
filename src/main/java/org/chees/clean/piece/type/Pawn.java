@@ -1,0 +1,5 @@
+package org.chees.clean.piece.type;
+
+public class Pawn {
+
+}
