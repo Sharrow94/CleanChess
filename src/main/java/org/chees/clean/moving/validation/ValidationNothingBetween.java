@@ -4,8 +4,9 @@ import org.chees.clean.board.ChessBoard;
 import org.chees.clean.board.position.Position;
 import org.chees.clean.engine.Move;
 import org.chees.clean.piece.Piece;
+import org.chees.clean.specification.composite.CompositeSpecification;
 
-public class ValidationNothingBetween implements MoveValidation {
+public class ValidationNothingBetween extends CompositeSpecification<Move> {
 
     private final ChessBoard chessBoard;
 
@@ -14,8 +15,9 @@ public class ValidationNothingBetween implements MoveValidation {
         this.chessBoard = chessBoard;
     }
 
-    public boolean test(Move move) {
-        return chessBoard.pieces().stream().map(Piece::position).noneMatch(position -> isBetween(position, move));
+    @Override
+    public boolean IsSatisfiedBy(Move candidate) {
+        return chessBoard.pieces().stream().map(Piece::position).noneMatch(position -> isBetween(position, candidate));
     }
 
     public boolean isBetween(Position position, Move move) {

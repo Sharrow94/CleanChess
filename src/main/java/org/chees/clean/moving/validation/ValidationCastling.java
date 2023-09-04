@@ -2,8 +2,9 @@ package org.chees.clean.moving.validation;
 
 import org.chees.clean.board.ChessBoard;
 import org.chees.clean.engine.Move;
+import org.chees.clean.specification.composite.CompositeSpecification;
 
-public class ValidationCastling implements MoveValidation {
+public class ValidationCastling extends CompositeSpecification<Move> {
 
     private final ChessBoard chessBoard;
 
@@ -12,8 +13,8 @@ public class ValidationCastling implements MoveValidation {
     }
 
     @Override
-    public boolean test(Move move) {
-        chessBoard.pieces().stream().filter(piece -> piece.position().equals(move.from()))
+    public boolean IsSatisfiedBy(Move candidate) {
+        chessBoard.pieces().stream().filter(piece -> piece.position().equals(candidate.from()))
                 .filter(x -> true);
         return false;
     }

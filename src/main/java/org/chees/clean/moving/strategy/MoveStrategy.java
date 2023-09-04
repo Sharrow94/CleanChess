@@ -7,7 +7,9 @@ import org.chees.clean.moving.equation.implementation.HorizontalEquation;
 import org.chees.clean.moving.equation.implementation.VerticalEquation;
 import org.chees.clean.piece.Piece;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface MoveStrategy {
@@ -25,9 +27,8 @@ public interface MoveStrategy {
     }
 
     static MoveStrategy pawnMoveStrategy() {
-        return piece -> Stream.of(new VerticalEquation(piece.position().letter().getValue()))
-                .flatMap(equation -> equation.getAvailableMoves(piece).stream())
-                .toList();
+        return piece -> Optional.of(new VerticalEquation(piece.position().letter().getValue()))
+                .map(equation -> equation.getAvailableMoves(piece)).orElse(Collections.emptyList());
     }
 
     static MoveStrategy queenMoveStrategy() {
@@ -52,7 +53,7 @@ public interface MoveStrategy {
             int number = position.number();
             int letter = position.letter().getValue();
             return Stream.of(new DiagonalEquation(1, number - letter),
-                            new DiagonalEquation(1, number + letter))
+                            new DiagonalEquation(-1, number + letter))
                     .flatMap(equation -> equation.getAvailableMoves(piece).stream())
                     .toList();
         };
@@ -60,7 +61,6 @@ public interface MoveStrategy {
 
     static MoveStrategy kingMoveStrategy() {
         return MoveStrategy::allDirectionsMove;
-
     }
 
     private static List<Move> allDirectionsMove(Piece piece) {

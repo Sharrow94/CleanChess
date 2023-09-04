@@ -1,20 +1,20 @@
 package org.chees.clean.moving.validation;
 
+import org.chees.clean.board.ChessBoard;
 import org.chees.clean.engine.Move;
 import org.chees.clean.piece.Color;
 import org.chees.clean.piece.Piece;
-
-import java.util.List;
+import org.chees.clean.specification.composite.CompositeSpecification;
 
 import static org.chees.clean.piece.Color.BLACK;
 import static org.chees.clean.piece.Color.WHITE;
 
-public class ValidationPawnMove implements MoveValidation {
+public class ValidationPawnMove extends CompositeSpecification<Move> {
 
-    private final List<Piece> pieces;
+    private final ChessBoard chessBoard;
 
-    public ValidationPawnMove(List<Piece> pieces) {
-        this.pieces = pieces;
+    public ValidationPawnMove(ChessBoard chessBoard) {
+        this.chessBoard = chessBoard;
     }
 
     private static boolean isPawnFirstMove(Piece piece) {
@@ -24,11 +24,11 @@ public class ValidationPawnMove implements MoveValidation {
     }
 
     @Override
-    public boolean test(Move move) {
-        return pieces.stream().filter(piece -> piece.position().equals(move.from()))
+    public boolean IsSatisfiedBy(Move candidate) {
+        return chessBoard.pieces().stream().filter(piece -> piece.position().equals(candidate.from()))
                 .findFirst()
-                .filter(piece -> isCorrectDirection(piece, move))
-                .map(piece -> isCorrectDelta(piece, move)).orElse(false);
+                .filter(piece -> isCorrectDirection(piece, candidate))
+                .map(piece -> isCorrectDelta(piece, candidate)).orElse(false);
     }
 
     private boolean isCorrectDirection(Piece piece, Move move) {
